@@ -1,0 +1,339 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Omega",
+        "description": "Documentação para o OmegaApi",
+        "version": "1.0.0",
+        "contact": {
+            "email": "vitorloboomega@gmail.com"
+        }
+    },
+    "tags": [
+        {
+            "name": "users",
+            "description": "Gerenciamento de usuários"
+        }
+    ],
+    "paths": {
+        "/users": {
+            "post": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Cria um novo usuário.",
+                "description": "Criar um novo usuário",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "name": "VitorLobo",
+                                    "email": "vitorloboomega@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Operação realizada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "admin": false,
+                                        "id": "db944683-090b-4fe1-9f79-83de76d0cc18",
+                                        "name": "VitorLobo",
+                                        "email": "vitorloboomega@gmail.com",
+                                        "created_at": "2022-05-26T11:15:10.574Z",
+                                        "updated_at": "2022-05-26T11:15:10.574Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Email já está sendo utilizando.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": "string"
+                                    },
+                                    "example": {
+                                        "error": "User already exists."
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Retorna todos os usuários cadastrados",
+                "description": "Apenas administradores podem acessar.",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": [
+                                        {
+                                            "admin": true,
+                                            "id": "db944683-090b-4fe1-9f79-4263b42b3612",
+                                            "name": "VitorLobo",
+                                            "email": "vitorloboomega@gmail.com",
+                                            "created_at": "2022-05-26T11:15:10.574Z",
+                                            "updated_at": "2022-05-26T11:15:10.574Z"
+                                        },
+                                        {
+                                            "admin": false,
+                                            "id": "f147cbae-43cd-1da5-82f5-83de76d0cc18",
+                                            "name": "RodrigoCorreia",
+                                            "email": "rodrigocorreiaga@gmail.com",
+                                            "created_at": "2022-05-26T11:15:10.574Z",
+                                            "updated_at": "2022-05-26T11:15:10.574Z"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Usuário não possui permissão ou não existe.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "error": "string"
+                                },
+                                "example": {
+                                    "error": "Apenas administradores possuem acesso a listagem"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "users/{user_id}": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Retorna o usuário escolhido",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "required": true,
+                        "description": "ID do usuário",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação realizada com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                          },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "admin": false,
+                                        "id": "db944683-090b-4fe1-9f79-83de76d0cc18",
+                                        "name": "VitorLobo",
+                                        "email": "vitorloboomega@gmail.com",
+                                        "created_at": "2022-05-26T11:15:10.574Z",
+                                        "updated_at": "2022-05-26T11:15:10.574Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": "string"
+                                    },
+                                    "example": {
+                                        "error": "User not found"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}/admin": {
+            "paths": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Torna admin um usuário.",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "user_id",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação realizada com sucesso.",
+                        "content": {
+                            "application/json": {
+                            "schema": {
+                                "type": "object",
+                                    "properties": {
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "created_at": {
+                                            "type": "string"
+                                        },
+                                        "updated_at": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "admin": true,
+                                        "id": "db944683-090b-4fe1-9f79-83de76d0cc18",
+                                        "name": "VitorLobo",
+                                        "email": "vitorloboomega@gmail.com",
+                                        "created_at": "2022-05-26T11:15:10.574Z",
+                                        "updated_at": "2022-05-26T11:15:10.574Z"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": "string"
+                                    },
+                                    "example": {
+                                        "error": "User not found"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
